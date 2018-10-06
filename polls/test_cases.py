@@ -41,7 +41,7 @@ class FunctionalTest(TestCase):
         correo.send_keys('ns.romerob@uniandes.edu.co')
 
         imagen = self.browser.find_element_by_id('id_imagen')
-        imagen.send_keys('/imagenes/POL03.png')
+        imagen.send_keys('E:\\chromedriver_win32\\POL03.png')
 
         nombreUsuario = self.browser.find_element_by_id('id_username')
         nombreUsuario.send_keys('ns.romerob')
@@ -56,4 +56,4 @@ class FunctionalTest(TestCase):
 
         span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Nestor Sebastian Apellido: Romero"]')
 
-        self.assertIn('Nestor Sebastian Romero', span.text)
+        self.assertIn('Nombre: Nestor Sebastian Apellido: Romero', span.text)
