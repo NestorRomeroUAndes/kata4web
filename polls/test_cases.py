@@ -16,3 +16,44 @@ class FunctionalTest(TestCase):
     def test_title(self):
         self.browser.get('http://localhost:8000')
         self.assertIn('Busco Ayuda', self.browser.title)
+
+    def test_registro_trabajador(self):
+        self.browser.get('http://localhost:8000')
+        link = self.browser.find_element_by_id('id_register')
+        link.click()
+
+        nombre = self.browser.find_element_by_id('id_nombre')
+        nombre.send_keys('Nestor Sebastian')
+
+        apellidos = self.browser.find_element_by_id('id_apellidos')
+        apellidos.send_keys('Romero')
+
+        experiencia = self.browser.find_element_by_id('id_aniosExperiencia')
+        experiencia.send_keys('9')
+
+        self.browser.find_element_by_xpath(
+            "//select[@id='id_tiposDeServicio']/option[text()='Ingeniero']").click()
+
+        telefono = self.browser.find_element_by_id('id_telefono')
+        telefono.send_keys('3173024578')
+
+        correo = self.browser.find_element_by_id('id_correo')
+        correo.send_keys('ns.romerob@uniandes.edu.co')
+
+        imagen = self.browser.find_element_by_id('id_imagen')
+        imagen.send_keys('/imagenes/POL03.png')
+
+        nombreUsuario = self.browser.find_element_by_id('id_username')
+        nombreUsuario.send_keys('ns.romerob')
+
+        clave = self.browser.find_element_by_id('id_password')
+        clave.send_keys('password')
+
+        botonGrabar = self.browser.find_element_by_id('id_grabar')
+        botonGrabar.click()
+
+        self.browser.implicitly_wait(3)
+
+        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Nestor Sebastian Apellido: Romero"]')
+
+        self.assertIn('Nestor Sebastian Romero', span.text)
