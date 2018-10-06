@@ -9,7 +9,7 @@ from django.forms import ModelForm
 
 class TiposDeServicio(models.Model):
     nombre = models.CharField(max_length=1000)
-    imagen = models.ImageField(upload_to='services')
+    imagen = models.ImageField(upload_to='seregisterTrabajadorrvices')
 
     def __unicode__(self):
         return u'{0}'.format(self.nombre)
