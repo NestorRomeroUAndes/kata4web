@@ -67,20 +67,22 @@ class FunctionalTest(TestCase):
 
         self.assertIn('Johanna Marcela Gutierrez Meza', h2.text)
 
-    def test_login(self):
+    def test_login2(self):
         self.browser.get('http://localhost:8000')
-        link = self.browser.find_element_by_id('id_login')
-        link.click()
+        link2 = self.browser.find_element_by_id('id_login')
+        link2.click()
 
-        usuario = self.browser.find_element_by_id('username')
-        usuario.send_keys('jm.gutierrez')
+        usuario2 = self.browser.find_element_by_id('username')
+        usuario2.send_keys('jm.gutierrez')
 
-        contrasena = self.browser.find_element_by_id('password')
-        contrasena.send_keys('password')
+        contrasena2 = self.browser.find_element_by_id('password')
+        contrasena2.send_keys('password')
 
-        botonAceptar = self.browser.find_element_by_id('aceptar')
-        botonAceptar.click()
+        botonAceptar2 = self.browser.find_element_by_id('aceptar')
+        botonAceptar2.click()
 
         self.browser.implicitly_wait(3)
 
-        span = self.browser.find_element(By.XPATH, '//span[text()="Bienvenida Johanna"]')
+        span2 = self.browser.find_element(By.XPATH, '//span[text()="Bienvenida Johanna"]')
+
+        self.assertIn('Bienvenida Johanna', span2.text)
