@@ -20,16 +20,16 @@
                     alert("on success ajax request" + data.mensaje);
                     if(data.mensaje == "ok")
                     {
-                        window.location = "http://localhost:8000"
+                        window.location = "http://localhost:8000/login"
                     }
                     else
                     {
                         $("#mensaje").text(data.mensaje);
                     }
                 },
-                failure: function (errMsg)
+                error: function (errMsg)
                 {
-                    alert("on failure ajax request");
+                    alert("on failure ajax request" + errMsg);
                 },
                 complete: function (errMsg)
                 {
@@ -49,7 +49,7 @@
             <div class="alert alert-danger">
                 <label id="mensaje">{{mensaje}}</label>
             </div>
-			<form method="post" onsubmit="enviarForm();">
+			<form method="post" action="" onsubmit="enviarForm();">
                 {% csrf_token %}
 				<div class="form-group">
 					<label class="control-label" for="username">Nombre de usuario</label>

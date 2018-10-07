@@ -3,7 +3,7 @@ import datetime
 import json
 import boto
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
@@ -29,28 +29,25 @@ def index(request):
 
 @csrf_exempt
 def login_view(request):
-
-    if request.user.is_authenticated():
-        # return redirect(reverse('media1:index'))
-        return render(request, "polls/index.html")
-
-    mensaje = ''
+    mensaje = 'Inicio'
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
+        juser = json.loads(request.body)
+        username = juser['username']
+        password = juser['password']
+        user = auth.authenticate(username=username, password=password)
         if user is not None:
-            print 'user is authenticated'
-            login(request, user)
-            # return redirect(reverse('media1:index'))
-            return render(request, "polls/index.html")
+            auth.login(request, user)
+            mensaje = "ok"
         else:
-            print 'user is NOT authenticated'
-            mensaje = 'Credenciales de acceso incorrectas'
-    print 'returning login page'
-    return render(request, 'polls/login.html', {'mensaje': mensaje})
+            mensaje = "Nombre de usuario o clave no valido"
+
+    #return render(request, "polls/index.html")
+        response = JsonResponse({"success": False, "error": "there was an error"})
+        response.status_code = 404
+    return HttpResponse("Success!")
 
 def ingresar(request):
+    print 'entrando a views.ingresar'
     return render(request, "polls/login.html")
 
 def logout(request):
