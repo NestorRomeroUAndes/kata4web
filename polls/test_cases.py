@@ -23,10 +23,10 @@ class FunctionalTest(TestCase):
         link.click()
 
         nombre = self.browser.find_element_by_id('id_nombre')
-        nombre.send_keys('Nestor Sebastian')
+        nombre.send_keys('Johanna Marcela')
 
         apellidos = self.browser.find_element_by_id('id_apellidos')
-        apellidos.send_keys('Romero')
+        apellidos.send_keys('Gutierrez Meza')
 
         experiencia = self.browser.find_element_by_id('id_aniosExperiencia')
         experiencia.send_keys('9')
@@ -35,16 +35,16 @@ class FunctionalTest(TestCase):
             "//select[@id='id_tiposDeServicio']/option[text()='Ingeniero']").click()
 
         telefono = self.browser.find_element_by_id('id_telefono')
-        telefono.send_keys('3173024578')
+        telefono.send_keys('3224624690')
 
         correo = self.browser.find_element_by_id('id_correo')
-        correo.send_keys('ns.romerob@uniandes.edu.co')
+        correo.send_keys('jm.gutierrez@uniandes.edu.co')
 
         imagen = self.browser.find_element_by_id('id_imagen')
         imagen.send_keys('E:\\chromedriver_win32\\POL03.png')
 
         nombreUsuario = self.browser.find_element_by_id('id_username')
-        nombreUsuario.send_keys('ns.romerob')
+        nombreUsuario.send_keys('jm.gutierrez')
 
         clave = self.browser.find_element_by_id('id_password')
         clave.send_keys('password')
@@ -54,15 +54,33 @@ class FunctionalTest(TestCase):
 
         self.browser.implicitly_wait(3)
 
-        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Nestor Sebastian Apellido: Romero"]')
+        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Johanna Marcela Apellido: Gutierrez Meza"]')
 
-        self.assertIn('Nombre: Nestor Sebastian Apellido: Romero', span.text)
+        self.assertIn('Nombre: Johanna Marcela Apellido: Gutierrez Meza', span.text)
 
     def test_verDetalle(self):
         self.browser.get('http://localhost:8000')
-        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Nestor Sebastian Apellido: Romero"]')
+        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Johanna Marcela Apellido: Gutierrez Meza"]')
         span.click()
 
-        h2 = self.browser.find_element(By.XPATH, '//h2[text()="Nestor Sebastian Romero"]')
+        h2 = self.browser.find_element(By.XPATH, '//h2[text()="Johanna Marcela Gutierrez Meza"]')
 
-        self.assertIn('Nestor Sebastian Romero', h2.text)
+        self.assertIn('Johanna Marcela Gutierrez Meza', h2.text)
+
+    def test_login(self):
+        self.browser.get('http://localhost:8000')
+        link = self.browser.find_element_by_id('id_login')
+        link.click()
+
+        usuario = self.browser.find_element_by_id('username')
+        usuario.send_keys('jm.gutierrez')
+
+        contrasena = self.browser.find_element_by_id('password')
+        contrasena.send_keys('password')
+
+        botonAceptar = self.browser.find_element_by_id('aceptar')
+        botonAceptar.click()
+
+        self.browser.implicitly_wait(3)
+
+        span = self.browser.find_element(By.XPATH, '//span[text()="Bienvenida Johanna"]')

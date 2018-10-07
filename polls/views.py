@@ -1,11 +1,12 @@
 # coding=utf-8
 import datetime
-
+import json
 import boto
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -26,19 +27,31 @@ def index(request):
                'form_trabajador': form_trabajador, 'form_usuario': form_usuario, 'base_url': settings.STATIC_URL}
     return render(request, 'polls/index.html', context)
 
+@csrf_exempt
+def login_view(request):
 
-def login(request):
-    username = request.POST.get('usrname', '')
-    password = request.POST.get('psw', '')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None:
-        auth.login(request, user)
-        messages.success(request, "Bienvenido al sistema {}".format(username), extra_tags="alert-success")
-        return HttpResponseRedirect('/')
-    else:
-        messages.error(request, "¡El usuario o la contraseña son incorrectos!", extra_tags="alert-danger")
-        return HttpResponseRedirect('/')
+    if request.user.is_authenticated():
+        # return redirect(reverse('media1:index'))
+        return render(request, "polls/index.html")
 
+    mensaje = ''
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            print 'user is authenticated'
+            login(request, user)
+            # return redirect(reverse('media1:index'))
+            return render(request, "polls/index.html")
+        else:
+            print 'user is NOT authenticated'
+            mensaje = 'Credenciales de acceso incorrectas'
+    print 'returning login page'
+    return render(request, 'polls/login.html', {'mensaje': mensaje})
+
+def ingresar(request):
+    return render(request, "polls/login.html")
 
 def logout(request):
     auth.logout(request)
@@ -153,8 +166,10 @@ def getTiposDeServicio(request, pk):
     tipo = TiposDeServicio.objects.get(pk=pk)
     return HttpResponse(serializers.serialize("json", [tipo]))
 
-def detalle_trabajador(request):
-    return render(request, "polls/detalle.html")
+def detalle_trabajador(request, id):
+    trabajador = get_object_or_404(Trabajador, pk=id)
+    params = {'trabajador': trabajador}
+    return render(request, "polls/detalle.html", params)
 
 
 def detail(request, pk):
