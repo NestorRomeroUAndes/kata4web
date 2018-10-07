@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar independiente</title>
+</head>
+<body>
+<form action="{{ trabajador.get_edit_absolute_url }}" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ form_trabajador.as_p }}
+    <input id="id_actualizar" type="submit" value="Actualizar"/>
+</form>
+</body>
+</html>

@@ -115,6 +115,7 @@ def registerTrabajador(request):
 
 
 # --------------------------
+# -------------paso editar perfil-------------------------
 
 def editar_perfil(request,idTrabajador):
     trabajador=Trabajador.objects.get(usuarioId=idTrabajador)
@@ -133,6 +134,7 @@ def editar_perfil(request,idTrabajador):
 
     context = {'form_trabajador': form_trabajador}
     return render(request, 'polls/editar.html', context)
+# -------------fin paso editar perfil-------------------------
 
 @csrf_exempt
 def add_comment(request):
