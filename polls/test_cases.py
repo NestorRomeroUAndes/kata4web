@@ -86,3 +86,41 @@ class FunctionalTest(TestCase):
         span2 = self.browser.find_element(By.XPATH, '//span[text()="Bienvenida Johanna"]')
 
         self.assertIn('Bienvenida Johanna', span2.text)
+
+
+    def test_editar_trabajador(self):
+        self.browser.get('http://localhost:8000')
+        link = self.browser.find_element_by_id('editar')
+        link.click()
+
+        nombre = self.browser.find_element_by_id('id_nombre')
+        nombre.clear()
+        nombre.send_keys('Johanna Gutierrez')
+
+        apellidos = self.browser.find_element_by_id('id_apellidos')
+        apellidos.clear()
+        apellidos.send_keys('Meza')
+
+        experiencia = self.browser.find_element_by_id('id_aniosExperiencia')
+        experiencia.clear()
+        experiencia.send_keys('10')
+
+        self.browser.find_element_by_xpath(
+            "//select[@id='id_tiposDeServicio']/option[text()='Ingeniero']").click()
+
+        telefono = self.browser.find_element_by_id('id_telefono')
+        telefono.clear()
+        telefono.send_keys('95135465498')
+
+        correo = self.browser.find_element_by_id('id_correo')
+        correo.clear()
+        correo.send_keys('mgutierrez@uniandes.edu.co')
+
+        botonGrabar = self.browser.find_element_by_id('id_actualizar')
+        botonGrabar.click()
+
+        self.browser.implicitly_wait(3)
+
+        span = self.browser.find_element(By.XPATH, '//span[text()="Nombre: Johanna Gutierrez Apellido: Meza"]')
+
+        self.assertIn('Nombre: Johanna Gutierrez Apellido: Meza', span.text)
