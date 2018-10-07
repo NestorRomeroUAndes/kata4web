@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comentario al independiente</title>
+</head>
+<body>
+
+<form action="{{ trabajador.get_comment_absolute_url }}" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ form_comentario.as_p }}
+    <input id="id_comentar" type="submit" value="Comentar"/>
+</form>
+
+</body>
+</html>

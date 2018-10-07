@@ -11,6 +11,9 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Trabajador, TrabajadorForm, UserForm, Comentario, registroTrabajadorForm
+# paso comentario--------------------
+from .models import comentarioForm
+# fin paso comentario -----------------
 from .models import TiposDeServicio
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -18,7 +21,7 @@ from django.contrib import auth
 
 
 def index(request):
-    trabajadores = Trabajador.objects.all()
+    trabajadores = Trabajador.objects.prefetch_related('comentario_set').all()
     tipos_de_servicios = TiposDeServicio.objects.all()
     form_trabajador = TrabajadorForm(request.POST)
     form_usuario = UserForm(request.POST)
@@ -136,14 +139,43 @@ def editar_perfil(request,idTrabajador):
     return render(request, 'polls/editar.html', context)
 # -------------fin paso editar perfil-------------------------
 
-@csrf_exempt
-def add_comment(request):
+# ---------------- paso comentario----------------------
+def add_comment(request,idTrabajador):
+    trabajador=Trabajador.objects.get(usuarioId=idTrabajador)
     if request.method == 'POST':
-       new_comment = Comentario(texto=request.POST.get('texto'),
-                                      trabajador=Trabajador.objects.get(pk=request.POST.get('trabajador')),
-                                      correo=request.POST.get('correo'))
-       new_comment.save()
-    return HttpResponse(serializers.serialize("json", [new_comment]))
+        # formulario enviado
+        formComment = comentarioForm(request.POST)
+
+        texto = request.POST.get('texto')
+        correo = request.POST.get('correo')
+
+        comentario = Comentario(texto=texto, correo=correo, trabajador=trabajador)
+
+
+
+
+        if formComment.is_valid():
+            # formulario validado correctamente
+            comentario.save()
+            return HttpResponseRedirect('/')
+
+    else:
+        # formulario inicial
+        formComment = comentarioForm()
+
+    context = {'form_comentario': formComment, 'trabajador': trabajador}
+    return render(request, 'polls/comentario.html', context)
+# ----------------------------------------------------------
+
+
+# @csrf_exempt
+# def add_comment(request):
+#     if request.method == 'POST':
+#        new_comment = Comentario(texto=request.POST.get('texto'),
+#                                       trabajador=Trabajador.objects.get(pk=request.POST.get('trabajador')),
+#                                       correo=request.POST.get('correo'))
+#        new_comment.save()
+#     return HttpResponse(serializers.serialize("json", [new_comment]))
 
 @csrf_exempt
 def mostrarTrabajadores(request, tipo=""):

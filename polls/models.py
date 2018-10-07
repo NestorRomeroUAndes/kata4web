@@ -30,11 +30,23 @@ class Trabajador(models.Model):
         """Returns the url to access a particular instance of MyModelName."""
         return reverse('principal:editar', args=[str(self.id)])
 
+    # Comment step 6---------------------------------------------------
+    def get_comment_absolute_url(self):
+        """Returns the url to access a particular instance of MyModelName."""
+        return reverse('principal:comentar', args=[str(self.id)])
+
 
 class Comentario(models.Model):
     texto = models.CharField(max_length=1000)
     trabajador = models.ForeignKey(Trabajador, null=True)
     correo = models.CharField(max_length=1000)
+
+# paso 6 comentario---------------------------------------
+class comentarioForm(ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto', 'correo']
+# ------------------------------------------------------
 
 class registroTrabajadorForm(ModelForm):
     class Meta:

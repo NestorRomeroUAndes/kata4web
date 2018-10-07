@@ -30,9 +30,19 @@
                         <img class="thumbnail img-responsive center-block"
                              src="/media/{{ trabajador.imagen }}" width="100" height="100">
                         <span>Nombre: {{ trabajador.nombre }} Apellido: {{ trabajador.apellidos }}</span>
-                        {#                    paso 5 editar#}
-                        <a id="editar" class="trabajador" href="{{ trabajador.get_edit_absolute_url }}"> Editar</a>
                     </a>
+                    {#                    paso 5 editar#}
+                        <a id="editar" class="trabajador" href="{{ trabajador.get_edit_absolute_url }}"> Editar</a>
+{#                    paso 6 comentar#}
+                        <a id="comentar" class="trabajador" href="{{ trabajador.get_comment_absolute_url }}"> Comentar</a>
+                </div>
+                <div class="panel-heading" style="text-align: center; background-color: black;">
+                    <p style="color: white; font-size: large;">Comentarios a: {{ trabajador.nombre }}</p>
+                {% for comentario in trabajador.comentario_set.all %}
+                    <p style="color: white; font-size: large;">{{ comentario.correo }} dice: {{ comentario.texto }}</p>
+                    {% empty %}
+                    <span style="color: white; font-size: large;">no hay comentarios</span>
+                {% endfor %}
                 </div>
             </div>
         </div>
